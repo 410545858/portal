@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="examleMapper">
+	
+	<!--  <cache type="org.mybatis.caches.oscache.OSCache"/> -->
+	
+	<!-- referto:http://mybatis.github.io/mybatis-3/sqlmap-xml.html#cache -->
+	<cache eviction="LRU" flushInterval="86400000" size="14" readOnly="true"/>
+	
+	<sql id="all_column">
+		id,uid, loginName,nickName,password,phone,email,createTime,updateTime,status,avatar
+	</sql>
+	
+	<sql id="base_column">
+		id,uid, loginName,nickName,password,phone,email,status,avatar
+	</sql>
+	
+	
+	
+</mapper>

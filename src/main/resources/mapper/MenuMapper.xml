@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="menuMapper">
+
+	<cache eviction="LRU" flushInterval="86400000"  readOnly="true" />
+
+	<sql id="all_column">
+		id,name,url,parent,privilegeId,priority,createTime,updateTime,version
+	</sql>
+	
+	<sql id="base_column">
+		id,name,url,parent,privilegeId,priority
+	</sql>
+
+	<select id="getList" resultType="menu">
+		select
+		<include refid="base_column" />
+		from menu
+		<where>
+			parent>0
+		</where>
+	</select>
+
+	<select id="getById" parameterType="int" resultType="menu"
+		useCache="false">
+		select
+		<include refid="base_column" />
+		from menu where id = #{id}
+	</select>
+
+</mapper>

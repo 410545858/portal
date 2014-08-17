@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	
+	<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:config.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:mongo.properties" ignore-unresolvable="true" />
+
+
+	<!-- Default bean name is 'mongo' -->
+	<!-- <mongo:mongo id="mongo" replica-set="${mongo.replica.set}"/> -->
+	<mongo:mongo id="bzmMongo" host="${bzm.mongo.host}" port="${bzm.mongo.port}">
+		<mongo:options 
+			connections-per-host="${mongo.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.connectTimeout}" 
+			max-wait-time="${mongo.maxWaitTime}"
+			auto-connect-retry="${mongo.autoConnectRetry}" 
+			socket-keep-alive="${mongo.socketKeepAlive}"
+			socket-timeout="${mongo.socketTimeout}" 
+			slave-ok="${mongo.slaveOk}"
+			write-number="1" 
+			write-timeout="0" 
+			write-fsync="true" 
+			/>
+	</mongo:mongo>
+	
+	<mongo:mongo id="keywordsMongo" host="${keywords.mongo.host}" port="${keywords.mongo.port}">
+		<mongo:options 
+			connections-per-host="${mongo.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.connectTimeout}" 
+			max-wait-time="${mongo.maxWaitTime}"
+			auto-connect-retry="${mongo.autoConnectRetry}" 
+			socket-keep-alive="${mongo.socketKeepAlive}"
+			socket-timeout="${mongo.socketTimeout}" 
+			slave-ok="${mongo.slaveOk}"
+			write-number="1" 
+			write-timeout="0" 
+			write-fsync="true" 
+			/>
+	</mongo:mongo>
+
+	<mongo:db-factory id="bzmFactory"
+					  dbname="${bzm.mongo.dbname}" 
+					  mongo-ref="bzmMongo" 
+					  username="${bzm.mongo.username}"
+					  password="${bzm.mongo.password}"/>
+					  
+	<mongo:db-factory id="keywordsFactory"
+					  dbname="${keywords.mongo.dbname}" 
+					  mongo-ref="keywordsMongo" 
+					  username="${keywords.mongo.username}"
+					  password="${keywords.mongo.password}"/>
+
+	<bean id="bzmMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="bzmFactory" />
+	</bean>
+	
+	<bean id="keywordsMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="keywordsFactory" />
+	</bean>
+	
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/resource/messages/messages" />
+		<property name="cacheSeconds" value="120" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+	
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">  
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>  
+        <property name="validationMessageSource" ref="messageSource"/>  
+	</bean>
+	
+	<bean id="setSolrServerUrl" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.frank.startup.portal.util.SolrUtil.setSolrServerUrl"/>
+	    <property name="arguments">
+	        <list>
+	        	<value>${solr.server.url}</value>
+	        </list>
+	   </property>
+	</bean>
+	
+	<bean id="setSMSKey" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.frank.startup.portal.util.SMSUtil.setSMSKey"/>
+	    <property name="arguments">
+	        <list>
+	        	<value>${sms.key}</value>
+	        </list>
+	   </property>
+	</bean>
+	
+	<import resource="spring-dataSource.xml" />
+</beans>

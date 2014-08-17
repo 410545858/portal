@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<!-- changes from the defaults -->
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="false" />
+		<setting name="defaultStatementTimeout" value="25000" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="user" type="com.frank.startup.portal.entity.User" />
+		<typeAlias alias="userRole" type="com.frank.startup.portal.entity.UserRole" />
+		<typeAlias alias="menu" type="com.frank.startup.portal.entity.Menu" />
+		<typeAlias alias="privilege" type="com.frank.startup.portal.entity.Privilege" />
+		<typeAlias alias="role" type="com.frank.startup.portal.entity.Role" />
+		<typeAlias alias="loginRecord" type="com.frank.startup.portal.entity.LoginRecord" />
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mapper/UserMapper.xml" />
+		<mapper resource="mapper/MenuMapper.xml" />
+		<mapper resource="mapper/RoleMapper.xml" />
+		<mapper resource="mapper/PrivilegeMapper.xml" />
+		<mapper resource="mapper/LoginRecordMapper.xml" />
+	</mappers>
+</configuration>
