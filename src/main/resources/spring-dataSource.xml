@@ -22,15 +22,13 @@
 	<!-- mybatis Dao -->
 	<bean id="myBatisDao" class="com.frank.startup.portal.dao.MyBatisDao" />
 
-    <!--c3p0 目前配置存在事务管理问题  -->
-	<!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		Connection Info
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		
 		<property name="driverClass" value="${jdbc.driver}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 
-		Connection Pooling Info
 		<property name="initialPoolSize" value="5" />
 		<property name="autoCommitOnClose" value="true"/>
         <property name="checkoutTimeout" value="5000"/>
@@ -39,23 +37,23 @@
         <property name="maxIdleTime" value="1200"/>
         <property name="acquireIncrement" value="5"/>
         <property name="maxIdleTimeExcessConnections" value="1800"/>
-	</bean> -->
+	</bean> 
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<!-- Connection Info -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		Connection Info
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 
-		<!-- Connection Pooling Info -->
+		Connection Pooling Info
 		<property name="initialSize" value="5" />
 		<property name="maxActive" value="100" />
 		<property name="maxIdle" value="30" />
 		<property name="maxWait" value="500" />
 		<property name="poolPreparedStatements" value="false" />
 		<property name="defaultAutoCommit" value="false" />
-	</bean>
+	</bean> -->
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -73,10 +71,10 @@
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
-			<tx:method name="del*" propagation="REQUIRED" rollback-for="Exception" />
-			<tx:method name="update*"  propagation="REQUIRED" rollback-for="Exception" />
-			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="add*"  rollback-for="java.lang.Exception" />
+			<tx:method name="del*"  rollback-for="Exception" />
+			<tx:method name="update*"   rollback-for="Exception" />
+			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>
 	
