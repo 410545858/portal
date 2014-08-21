@@ -39,17 +39,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void add(User entity) {
 		myBatisDao.add("userMapper.add", entity);
-//		String roleIdsStr = entity.getRoleIds();
-//		if(StringUtils.isNotBlank(roleIdsStr)){
-//			myBatisDao.add("userMapper.add", entity);
-//			String[] roleIds = roleIdsStr.split("\\|");
-//	          for (String roleId : roleIds) {
-//	             UserRole userRole = new UserRole();
-//	             userRole.setUserId(entity.getId());
-//	             userRole.setRoleId(roleId);
-//	             myBatisDao.add("userMapper.addUserRole", userRole);
-//	          }
-//		}
+		int userId = entity.getId();
+		String roleIdsStr = entity.getRoleIds();
+		if(StringUtils.isNotBlank(roleIdsStr)){
+			myBatisDao.add("userMapper.add", entity);
+			String[] roleIds = roleIdsStr.split("\\|");
+	          for (String roleId : roleIds) {
+	             UserRole userRole = new UserRole();
+	             userRole.setUserId(entity.getId());
+	             userRole.setRoleId(roleId);
+	             myBatisDao.add("userMapper.addUserRole", userRole);
+	          }
+		}
 	}
 
 	@Override
