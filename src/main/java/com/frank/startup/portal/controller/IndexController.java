@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,11 +34,6 @@ public class IndexController extends BaseController {
 	@Autowired
 	private UserService userService;
 	
-
-	@Autowired
-	@Qualifier("bzmMongoTemplate")
-	private MongoTemplate mongoTemplate;
-
 
 	@RequestMapping("/")
 	public String start(HttpServletRequest request) {
