@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="examleMapper">
-	
-	<!--  <cache type="org.mybatis.caches.oscache.OSCache"/> -->
-	
+
+	<!-- 转义符号 &lt; < 小于号 &gt; > 大于号 &amp; & 和 &apos; ’ 单引号 &quot; " 双引号 -->
+	<!-- CURRENT_TIMESTAMP 获取当前时间 关键词 order,desc 等需要加引号，如 `order` -->
+	<!-- <cache type="org.mybatis.caches.oscache.OSCache"/> -->
 	<!-- referto:http://mybatis.github.io/mybatis-3/sqlmap-xml.html#cache -->
-	<cache eviction="LRU" flushInterval="86400000" size="14" readOnly="true"/>
-	
+	<cache eviction="LRU" flushInterval="86400000" size="14"
+		readOnly="true" />
+
 	<sql id="all_column">
-		id,uid, loginName,nickName,password,phone,email,createTime,updateTime,status,avatar
+		id,uid,
+		loginName,nickName,password,phone,email,createTime,updateTime,status,avatar
 	</sql>
-	
+
 	<sql id="base_column">
-		id,uid, loginName,nickName,password,phone,email,status,avatar
+		id,uid,
+		loginName,nickName,password,phone,email,status,avatar
 	</sql>
-	
-	
-	
+
+	<delete id="deleteByIds" parameterType="java.util.List">
+		delete from user where id in
+		<foreach collection="list" index="index" item="id" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="getList" parameterType="user" resultType="user"
+		useCache="false">
+		select
+		<include refid="base_column" />
+		from user
+		<where>
+			<if test="loginName != null and loginName != ''">
+				and loginName like concat('%',#{loginName},'%')
+			</if>
+			<if test="phone != null and phone != ''">
+				and phone like concat('%',#{phone},'%')
+			</if>
+		</where>
+		order by updatetime desc limit #{start},#{pageSize}
+	</select>
+
+	<select id="getPackageNameByUserIds" resultType="accountPackage">
+		select up.userId , p.description from user_package up,package p where
+		(up.userId in
+		<foreach collection="list" index="index" item="account" open="("
+			separator="," close=")">
+			#{account.id}
+		</foreach>
+		) and up.packageId = p.id
+	</select>
+
+	<insert id="adds">
+		insert into invitation_code (activeId,code,creator) values
+		<foreach collection="list" index="index" item="entity"
+			separator=",">
+			(#{entity.activeId},#{entity.code},#{entity.creator})
+		</foreach>
+	</insert>
+
 </mapper>
