@@ -1,5 +1,7 @@
 package com.frank.startup.portal.util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -64,5 +66,14 @@ public class UUIDGenerator {
 		}
 		String str = new String(rands);
 		return str;
+	}
+	
+	/**
+	 * 生成订单Id
+	 * @param userId
+	 * @return
+	 */
+	public static String genOrderId(int userId) {
+		return new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date()) + String.format("%06d", userId) + generateCheckPass(3);
 	}
 }
