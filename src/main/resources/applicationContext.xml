@@ -18,7 +18,7 @@
 
 	<!-- Default bean name is 'mongo' -->
 	<!-- <mongo:mongo id="mongo" replica-set="${mongo.replica.set}"/> -->
-	<mongo:mongo id="bzmMongo" host="${bzm.mongo.host}" port="${bzm.mongo.port}">
+	<mongo:mongo id="portalMongo" host="${portal.mongo.host}" port="${portal.mongo.port}">
 		<mongo:options 
 			connections-per-host="${mongo.connectionsPerHost}"
 			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
@@ -34,7 +34,7 @@
 			/>
 	</mongo:mongo>
 	
-	<mongo:mongo id="keywordsMongo" host="${keywords.mongo.host}" port="${keywords.mongo.port}">
+	<mongo:mongo id="consoleMongo" host="${console.mongo.host}" port="${console.mongo.port}">
 		<mongo:options 
 			connections-per-host="${mongo.connectionsPerHost}"
 			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
@@ -50,24 +50,24 @@
 			/>
 	</mongo:mongo>
 
-	<mongo:db-factory id="bzmFactory"
-					  dbname="${bzm.mongo.dbname}" 
-					  mongo-ref="bzmMongo" 
-					  username="${bzm.mongo.username}"
-					  password="${bzm.mongo.password}"/>
+	<mongo:db-factory id="portalFactory"
+					  dbname="${portal.mongo.dbname}" 
+					  mongo-ref="portalMongo" 
+					  username="${portal.mongo.username}"
+					  password="${portal.mongo.password}"/>
 					  
-	<mongo:db-factory id="keywordsFactory"
-					  dbname="${keywords.mongo.dbname}" 
-					  mongo-ref="keywordsMongo" 
-					  username="${keywords.mongo.username}"
-					  password="${keywords.mongo.password}"/>
+	<mongo:db-factory id="consoleFactory"
+					  dbname="${console.mongo.dbname}" 
+					  mongo-ref="consoleMongo" 
+					  username="${console.mongo.username}"
+					  password="${console.mongo.password}"/>
 
-	<bean id="bzmMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="bzmFactory" />
+	<bean id="portalMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="portalFactory" />
 	</bean>
 	
-	<bean id="keywordsMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="keywordsFactory" />
+	<bean id="consoleMongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="consoleFactory" />
 	</bean>
 	
 	<bean id="messageSource"

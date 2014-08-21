@@ -394,18 +394,19 @@
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
 				<db.username>dbuser</db.username>
 				<db.password>123456</db.password>
-				<solr.url>http://solr.bangzhumai.com/solr</solr.url>
-				<bzm.mongo.host>211.151.8.72</bzm.mongo.host>
-				<bzm.mongo.port>28028</bzm.mongo.port>
-				<bzm.mongo.username>jonedooadmin</bzm.mongo.username>
-				<bzm.mongo.password>lh89wefmj</bzm.mongo.password>
-				<bzm.mongo.dbname>admin</bzm.mongo.dbname>
-				<keywords.mongo.host>114.215.195.233</keywords.mongo.host>
-				<keywords.mongo.port>27017</keywords.mongo.port>
-				<keywords.mongo.username>jonedoo</keywords.mongo.username>
-				<keywords.mongo.password>imouse7914</keywords.mongo.password>
-				<keywords.mongo.dbname>taobao_keywords_index</keywords.mongo.dbname>
+				<solr.url>http://solr.gitsea.com/solr</solr.url>
+				<portal.mongo.host>203.195.186.200</portal.mongo.host>
+				<portal.mongo.port>27017</portal.mongo.port>
+				<portal.mongo.username>test</portal.mongo.username>
+				<portal.mongo.password>123456</portal.mongo.password>
+				<portal.mongo.dbname>admin</portal.mongo.dbname>
+				<console.mongo.host>203.195.186.201</console.mongo.host>
+				<console.mongo.port>27017</console.mongo.port>
+				<console.mongo.username>test</console.mongo.username>
+				<console.mongo.password>123456</console.mongo.password>
+				<console.mongo.dbname>admin</console.mongo.dbname>
 				<sms.key>f606f1fd5a8c289627176e46a0e60068</sms.key>
+				<mongo.replica.set>192.168.1.110:27017,192.168.1.111:27017,192.168.1.112:27017</mongo.replica.set>
 			</properties>
 		</profile>
 		<profile>
@@ -415,18 +416,19 @@
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
 				<db.username>dbuser</db.username>
 				<db.password>123456</db.password>
-				<solr.url>http://solr.bangzhumai.com/solr</solr.url>
-				<bzm.mongo.host>211.151.8.72</bzm.mongo.host>
-				<bzm.mongo.port>28028</bzm.mongo.port>
-				<bzm.mongo.username>jonedooadmin</bzm.mongo.username>
-				<bzm.mongo.password>lh89wefmj</bzm.mongo.password>
-				<bzm.mongo.dbname>admin</bzm.mongo.dbname>
-				<keywords.mongo.host>114.215.195.233</keywords.mongo.host>
-				<keywords.mongo.port>27017</keywords.mongo.port>
-				<keywords.mongo.username>jonedoo</keywords.mongo.username>
-				<keywords.mongo.password>imouse7914</keywords.mongo.password>
-				<keywords.mongo.dbname>taobao_keywords_index</keywords.mongo.dbname>
+				<solr.url>http://solr.gitsea.com/solr</solr.url>
+				<portal.mongo.host>203.195.186.200</portal.mongo.host>
+				<portal.mongo.port>27017</portal.mongo.port>
+				<portal.mongo.username>test</portal.mongo.username>
+				<portal.mongo.password>123456</portal.mongo.password>
+				<portal.mongo.dbname>admin</portal.mongo.dbname>
+				<console.mongo.host>203.195.186.201</console.mongo.host>
+				<console.mongo.port>27017</console.mongo.port>
+				<console.mongo.username>test</console.mongo.username>
+				<console.mongo.password>123456</console.mongo.password>
+				<console.mongo.dbname>admin</console.mongo.dbname>
 				<sms.key>f606f1fd5a8c289627176e46a0e60068</sms.key>
+				<mongo.replica.set>192.168.1.110:27017,192.168.1.111:27017,192.168.1.112:27017</mongo.replica.set>
 			</properties>
 		</profile>
 	</profiles>
