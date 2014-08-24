@@ -392,6 +392,9 @@
 			<properties>
 				<db.driver>com.mysql.jdbc.Driver</db.driver>
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
+				<!-- 数据库激情配置 -->
+				<!-- <db.driver>com.mysql.jdbc.ReplicationDriver</db.driver>
+				<db.url>jdbc:mysql:replication://192.168.1.201:3306,192.168.1.200:3306/startup</db.url> -->
 				<db.username>dbuser</db.username>
 				<db.password>123456</db.password>
 				<solr.url>http://solr.gitsea.com/solr</solr.url>
