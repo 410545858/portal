@@ -12,6 +12,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<mybatis.version>3.2.7</mybatis.version>
 		<dbcp.version>1.4</dbcp.version>
+		<version.jersey>1.18</version.jersey>
 		<junit.version>4.8.2</junit.version>
 		<jackson.version>1.9.12</jackson.version>
 		<aspectj.version>1.8.2</aspectj.version>
@@ -326,6 +327,11 @@
  			<groupId>org.jvnet.hudson.dom4j</groupId>
   			<artifactId>dom4j</artifactId>
   			<version>1.6.1-hudson-3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>${version.jersey}</version>
 		</dependency>
 	</dependencies>
 	<build>
