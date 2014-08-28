@@ -428,4 +428,17 @@ public class DateUtil {
 		return new Date(middleTime);
 	}
 	
+	/**
+	 * 获取下n个月时间
+	 * @param date
+	 * @param months
+	 * @return
+	 */
+	public static Date getNextMonths(Date date,int months){
+		Calendar now = Calendar.getInstance();
+		now.setTime(date);
+		now.add(Calendar.MONTH, months);
+		return now.getTime();
+	}
+	
 }
