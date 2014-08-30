@@ -322,7 +322,21 @@ public class DateUtil {
 	 * @return Long 天数
 	 */
 	public static Long compareDate(Date from, Date to) {
-		return (to.getTime() - from.getTime()) / DAY;
+		Calendar fromCalendar = Calendar.getInstance();  
+        fromCalendar.setTime(from);  
+        fromCalendar.set(Calendar.HOUR_OF_DAY, 0);  
+        fromCalendar.set(Calendar.MINUTE, 0);  
+        fromCalendar.set(Calendar.SECOND, 0);  
+        fromCalendar.set(Calendar.MILLISECOND, 0);  
+  
+        Calendar toCalendar = Calendar.getInstance();  
+        toCalendar.setTime(to);  
+        toCalendar.set(Calendar.HOUR_OF_DAY, 0);  
+        toCalendar.set(Calendar.MINUTE, 0);  
+        toCalendar.set(Calendar.SECOND, 0);  
+        toCalendar.set(Calendar.MILLISECOND, 0);
+        
+		return (toCalendar.getTime().getTime() - fromCalendar.getTime().getTime()) / DAY;
 	}
 	
 	/**

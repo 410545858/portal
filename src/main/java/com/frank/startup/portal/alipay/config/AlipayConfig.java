@@ -32,9 +32,9 @@ public class AlipayConfig {
 	// 商户账号, 卖家支付宝帐户
 	public static final String NAME = "";
 	//服务器异步通知页面路径, 不能加?id=123这类自定义参数, 不能写成http://localhost/
-	public static final String NOTIFY_URL = "http://gitsea.com/pay/notify";
+	public static String NOTIFY_URL = "http://gitsea.com/pay/notify";
 	//页面跳转同步通知页面路径
-	public static final String REUTRN_URL = "http://gitsea.com/pay/return";
+	public static String REUTRN_URL = "http://gitsea.com/pay/return";
 	// 支付类型
 	public static final String PAYMENT_TYPE = "1";
 
@@ -47,5 +47,10 @@ public class AlipayConfig {
 	public static final String INPUT_CHARSET = "utf-8";
 	// 签名方式 不需修改
 	public static final String SIGN_TYPE = "MD5";
+	
+	public static void init(String notifyUrl,String returnUrl){
+		NOTIFY_URL = notifyUrl;
+		REUTRN_URL = returnUrl;
+	}
 
 }

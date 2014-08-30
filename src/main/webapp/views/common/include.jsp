@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="https://gitsea.com/tag/view" prefix="portal" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
 	String path=request.getContextPath();
 %>

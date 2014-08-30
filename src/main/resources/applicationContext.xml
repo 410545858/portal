@@ -100,5 +100,15 @@
 	   </property>
 	</bean>
 	
+	<bean id="setAlipay" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="staticMethod" value="com.frank.startup.portal.alipay.config.AlipayConfig.init"/>
+	    <property name="arguments">
+	        <list>
+	        	<value>${alipay.notify}</value>
+	        	<value>${alipay.return}</value>
+	        </list>
+	   </property>
+	</bean>
+	
 	<import resource="spring-dataSource.xml" />
 </beans>

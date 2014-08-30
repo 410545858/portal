@@ -2,6 +2,6 @@
 <html>
 <body>
 <%@ include file="common/include.jsp"%>
-<h2>Hello Portal!</h2>
+<h2>Hello Portal 中文!</h2>
 </body>
 </html>
