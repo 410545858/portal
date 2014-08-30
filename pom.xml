@@ -16,7 +16,7 @@
 		<junit.version>4.8.2</junit.version>
 		<jackson.version>1.9.12</jackson.version>
 		<aspectj.version>1.8.2</aspectj.version>
-		<org.springframework.version>3.1.4.RELEASE</org.springframework.version>
+		<org.springframework.version>3.2.8.RELEASE</org.springframework.version>
 		<mysql-connector.version>5.1.32</mysql-connector.version>
 		<log4j.version>1.2.17</log4j.version>
 		<commons-io.version>2.4</commons-io.version>
@@ -30,6 +30,7 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<c3p0.version>0.9.2.1</c3p0.version>
 		<json-lib-version>2.4</json-lib-version>
+		<spring.data.mongodb>1.5.4.RELEASE</spring.data.mongodb>
 	</properties>
 
 	<dependencies>
@@ -226,7 +227,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
-			<version>1.2.1.RELEASE</version>
+			<version>${spring.data.mongodb}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
