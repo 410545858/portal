@@ -1,6 +1,7 @@
 package com.frank.startup.portal.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.frank.startup.portal.common.Constant;
 import com.frank.startup.portal.common.MessageConstant;
 import com.frank.startup.portal.dto.LoginBean;
+import com.frank.startup.portal.entity.Session;
 import com.frank.startup.portal.entity.User;
 import com.frank.startup.portal.service.UserService;
+import com.frank.startup.portal.util.SessionIdGenerator;
 
 /**
  * @ClassName: IndexController.java
@@ -37,11 +40,17 @@ public class IndexController extends BaseController {
 	private UserService userService;
 	
 	@Autowired
-	@Qualifier("portalMongoTemplate")
+	@Qualifier("consoleMongoTemplate")
 	private MongoTemplate mongoTemplate;
 	
 	@RequestMapping("/")
 	public String start(HttpServletRequest request) {
+//		Session session = new Session();
+//		session.setUserid(12345656);
+//		// modify and update with save()
+//		session.setSessionid(SessionIdGenerator.getInstance().generateSessionId());
+//		session.setDate(new Date());
+//		mongoTemplate.save(session);
 		return "redirect:index";
 	}
 	
