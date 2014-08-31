@@ -121,4 +121,5 @@
 	</bean>
 	
 	<import resource="spring-dataSource.xml" />
+	<!-- <import resource="spring-quartz.xml" /> -->
 </beans>
