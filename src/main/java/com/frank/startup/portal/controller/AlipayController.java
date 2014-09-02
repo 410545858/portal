@@ -32,14 +32,14 @@ public class AlipayController extends BaseController {
 			String		body			// 订单描述
 	) {
 		ModelAndView mav = new ModelAndView("package/alipay");
-		
+		int userId = super.getCurretnUser(request).getId();
 		Order order=null;
 		if (orderId != null) { // 订单已存在
 			if (order == null) {
 				return mav;
 			}
 		} else { // 订单不存在
-			int userId = super.getCurretnUser(request).getId();
+			
 			String out_trade_no = UUIDGenerator.genOrderId(userId); // 26位商户订单号
 			order = new Order();
 			order.setOrderId(out_trade_no);
@@ -55,28 +55,12 @@ public class AlipayController extends BaseController {
 		}
 
 		// 把请求参数打包成数组
-		Map<String, String> sParaTemp = new HashMap<String, String>();
-		sParaTemp.put("service", "create_direct_pay_by_user");
-		sParaTemp.put("partner", AlipayConfig.PARTNER);
-		sParaTemp.put("_input_charset", AlipayConfig.INPUT_CHARSET);
-		sParaTemp.put("payment_type", AlipayConfig.PAYMENT_TYPE);
-		sParaTemp.put("notify_url", AlipayConfig.NOTIFY_URL);
-		sParaTemp.put("return_url", AlipayConfig.REUTRN_URL);
-		sParaTemp.put("seller_email", AlipayConfig.NAME);
-		
-		sParaTemp.put("out_trade_no", order.getOrderId());
-		sParaTemp.put("subject", order.getDescription());
-		sParaTemp.put("total_fee", "0.01"); // 付款金额 TODO
-		
-		StringBuilder sb = new StringBuilder();
-		sb.delete(sb.length() - 2, sb.length());
-		sParaTemp.put("body", sb.toString());
 		
 //		sParaTemp.put("show_url", show_url); // 商品展示地址
 //		sParaTemp.put("anti_phishing_key", anti_phishing_key); // 防钓鱼时间戳
 //		sParaTemp.put("exter_invoke_ip", exter_invoke_ip); // 客户端的IP地址, 非局域网的外网IP地址，如：221.0.0.1
 		
-		mav.addObject("html", AlipaySubmit.buildRequest(sParaTemp, "post", "确认"));
+		mav.addObject("html", genAlipayHtml( userId,  order));
 
 		return mav;
 		
@@ -111,4 +95,26 @@ public class AlipayController extends BaseController {
 		return "redirect:/user/order";
 	}
 
+	private String genAlipayHtml(int userId, Order order) {
+		Map<String, String> sParaTemp = new HashMap<String, String>();
+		sParaTemp.put("service", "create_direct_pay_by_user");
+		sParaTemp.put("partner", AlipayConfig.PARTNER);
+		sParaTemp.put("_input_charset", AlipayConfig.INPUT_CHARSET);
+		sParaTemp.put("payment_type", AlipayConfig.PAYMENT_TYPE);
+		sParaTemp.put("notify_url", AlipayConfig.NOTIFY_URL);
+		sParaTemp.put("return_url", AlipayConfig.REUTRN_URL);
+		sParaTemp.put("seller_email", AlipayConfig.NAME);
+		
+		sParaTemp.put("out_trade_no", order.getOrderId());
+		sParaTemp.put("subject", order.getDescription());
+		sParaTemp.put("total_fee", "0.01"); // 付款金额 TODO
+		
+		StringBuilder sb = new StringBuilder();
+		sb.delete(sb.length() - 2, sb.length());
+		sParaTemp.put("body", sb.toString());
+//		sParaTemp.put("show_url", show_url); // 商品展示地址
+//		sParaTemp.put("anti_phishing_key", anti_phishing_key); // 防钓鱼时间戳
+//		sParaTemp.put("exter_invoke_ip", exter_invoke_ip); // 客户端的IP地址, 非局域网的外网IP地址，如：221.0.0.1
+		return AlipaySubmit.buildRequest(sParaTemp, "post", "确认");
+	}
 }
