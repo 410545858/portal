@@ -38,12 +38,20 @@ public class User implements Serializable{
 	private Date updateTime;//更新时间
 	private int version;//乐观锁
 	private String roleIds;
+	private Date lastLoginTime;
+	private String lastLoginIp;
 	
 	private List<Privilege> privilegeList = new ArrayList<Privilege>();
 	private List<Menu> menuList = new ArrayList<Menu>();
 	
 	public User(){
 		
+	}
+	
+	public User(Date lastLoginTime,String lastLoginIp,String loginName){
+		this.lastLoginTime = lastLoginTime;
+		this.lastLoginIp = lastLoginIp;
+		this.loginName = loginName;
 	}
 	public User(String loginname,String phone,String password,String avatar){
 		this.loginName = loginname;
@@ -178,6 +186,18 @@ public class User implements Serializable{
 	 */
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
+	public String getLastLoginIp() {
+		return lastLoginIp;
+	}
+	public void setLastLoginIp(String lastLoginIp) {
+		this.lastLoginIp = lastLoginIp;
 	}
 	/**
 	 * @param version the version to set

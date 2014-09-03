@@ -101,6 +101,7 @@ public class IndexController extends BaseController {
 			ModelAndView mav = new ModelAndView("login");
 			loginBean.setPassword("");
 			result.rejectValue("validCode", MessageConstant.ERROR_CAPTCHA, MessageConstant.ERROR_CAPTCHA);
+			mav.addObject("loginResult", "验证码错误");
 			mav.addObject(loginBean);
 			return mav;
 		}
@@ -109,13 +110,18 @@ public class IndexController extends BaseController {
 		if (null == user) {
 			ModelAndView mav = new ModelAndView("login");
 			loginBean.setPassword("");
+			mav.addObject("loginResult", "用户名或密码错误");
 			mav.addObject("loginBean", loginBean);
 			result.rejectValue("validCode", MessageConstant.ERROR_LOGIN_NAME_PASSWORD_WRONG, MessageConstant.ERROR_LOGIN_NAME_PASSWORD_WRONG);
 			return mav;
 		}
-
+		
 		super.getSessionInfo(request.getSession()).setByUser(user);
-		return new ModelAndView("redirect:dashboard");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("loginBean", loginBean);
+		mav.addObject("loginResult", "登录成功");
+		mav.setViewName("redirect:dashboard");
+		return mav;
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)

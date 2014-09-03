@@ -48,6 +48,15 @@
 		where id = #{id}
 	</update>
 	
+	<update id="updateLastLoginInfo" parameterType="user" >
+		update user
+		<set>
+			lastLoginTime = #{lastLoginTime},
+			lastLoginIp = #{lastLoginIp}
+		</set>
+		where loginName = #{loginName}
+	</update>
+	
 	<update id="updatePsw" parameterType="user" >
 		update user
 		<set>

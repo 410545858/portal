@@ -22,6 +22,8 @@ public class LoginBean extends BaseBean{
 	@ValidCode
 	private String validCode;
 	
+	private String loginName;
+	
 	
 	public String getPhone() {
 		return phone;
@@ -40,6 +42,12 @@ public class LoginBean extends BaseBean{
 	}
 	public void setValidCode(String validCode) {
 		this.validCode = validCode;
+	}
+	public String getLoginName() {
+		return loginName;
+	}
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 	
 }
