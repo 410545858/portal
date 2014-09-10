@@ -14,6 +14,7 @@
 	<context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true" />
 	<context:property-placeholder location="classpath:config.properties" ignore-unresolvable="true" />
 	<context:property-placeholder location="classpath:mongo.properties" ignore-unresolvable="true" />
+	<context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true" />
 
 
 	<!-- Default bean name is 'mongo' -->
@@ -80,6 +81,33 @@
 	
 	<mongo:template id="consoleMongoTemplate" db-factory-ref="consoleFactory" write-concern="SAFE"/>
 	
+	<!-- Spring data Redis -->
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="usePool" value="true"></property>
+        <property name="hostName" value="${redis.host}" />
+        <property name="port" value="${redis.port}" />
+        <property name="password" value="${redis.pass}" />
+        <property name="timeout" value="${redis.timeout}" />
+        <property name="database" value="${redis.default.db}"></property>
+        <constructor-arg index="0" ref="jedisPoolConfig" />
+    </bean>
+ 
+    <!-- jedis pool配置 -->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.maxActive}" />
+        <property name="maxIdle" value="${redis.maxIdle}" />
+        <property name="maxWaitMillis" value="${redis.maxWait}" />
+        <!--
+        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+        -->
+    </bean>
+ 
+    <!-- Redis Template -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+    </bean>
+    
+    
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="/resource/messages/messages" />

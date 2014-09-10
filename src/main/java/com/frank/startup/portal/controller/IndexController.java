@@ -1,7 +1,7 @@
 package com.frank.startup.portal.controller;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +26,6 @@ import com.frank.startup.portal.dto.LoginBean;
 import com.frank.startup.portal.entity.Session;
 import com.frank.startup.portal.entity.User;
 import com.frank.startup.portal.service.UserService;
-import com.frank.startup.portal.util.SessionIdGenerator;
 
 /**
  * @ClassName: IndexController.java
@@ -38,6 +39,9 @@ public class IndexController extends BaseController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 	
 	@Autowired
 	@Qualifier("consoleMongoTemplate")
@@ -57,7 +61,15 @@ public class IndexController extends BaseController {
 
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest request) {
+		ValueOperations<String, String> valueOper = redisTemplate.opsForValue();
+		valueOper.set("loginname", "1asdf");
+		String key = "user-test";
+		redisTemplate.opsForHash().put(key, "id", UUID.randomUUID().toString());
+		redisTemplate.opsForHash().put(key, "firstName", "frank");
+		redisTemplate.opsForHash().put(key, "lastName", "wong");
+		redisTemplate.opsForSet().add("user", key);
 		ModelAndView mav = new ModelAndView("index");
+		
 		return mav;
 	}
 
