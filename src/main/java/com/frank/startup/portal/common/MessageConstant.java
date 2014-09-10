@@ -49,6 +49,7 @@ public interface MessageConstant {
 	
 	//double
 	String ERROR_DOUBLE="{err.double}";
+	String ERROR_RANGE_DOUBLE="{err.range.double}";
 	
 	//date
 	String ERROR_DATE="{err.date}";
