@@ -35,7 +35,20 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 		<servlet-name>portal</servlet-name>
 	</filter-mapping>
 	
-	 
+	<filter>
+    	<filter-name>permission</filter-name>
+   	 	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    	<init-param>
+        	<param-name>targetBeanName</param-name>
+        	<param-value>redisSessionFilter</param-value>
+   	 	</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>permission</filter-name>
+		<servlet-name>portal</servlet-name>
+	</filter-mapping>
+	
 	<filter>
 		<filter-name>loggerFilter</filter-name>
 		<filter-class>com.frank.startup.portal.spring.filter.LoggerFilter</filter-class>
@@ -45,6 +58,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 		<filter-name>loggerFilter</filter-name>
 		<servlet-name>portal</servlet-name>
 	</filter-mapping>
+	
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener

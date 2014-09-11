@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.frank.startup.portal.service.RedisSessionService;
 import com.frank.startup.portal.spring.RedisHttpSession;
 import com.frank.startup.portal.util.SessionIdGenerator;
 
@@ -30,17 +32,18 @@ public class RedisHttpSessionFilter extends OncePerRequestFilter {
 	private static final Logger logger = Logger.getLogger(RedisHttpSessionFilter.class);
 
 	public static final String SESSION_ID_ALIAS = "JSESSIONID";
-
+	
+	@Autowired
+	private RedisSessionService redisSessionService;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		String sessionId = getCookie(request,SESSION_ID_ALIAS);
 		RedisHttpSession session;
 		if (StringUtils.isEmpty(sessionId)) {
 			setCookie(response);
-			session = new RedisHttpSession(sessionId,true);
-		}else{
-			session = new RedisHttpSession(sessionId,false);
 		}
+		session = new RedisHttpSession(sessionId,redisSessionService);
 		HttpServletRequest requestWrapper = new RequestWrapper(request, session);
 		filterChain.doFilter(requestWrapper, response);
 	}

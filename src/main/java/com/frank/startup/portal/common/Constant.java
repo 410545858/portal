@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableMap;
 public interface Constant {
 	
 	public final static Integer DEFAULT_PAGE_SIZE = 10;
+	public static final int SESSION_LIVE_SECONDS = 1800;
 	
 	public final static String KEY_KAPTCHA = "kaptcha";
 	

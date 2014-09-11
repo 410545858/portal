@@ -5,9 +5,16 @@ package com.frank.startup.portal.spring;
 
 import java.util.Enumeration;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import com.frank.startup.portal.service.RedisSessionService;
 
 /**
  * @author frankwong
@@ -15,14 +22,23 @@ import javax.servlet.http.HttpSessionContext;
  */
 public class RedisHttpSession implements HttpSession {
 
+	private  String sessionId;
+	private boolean invalidated;
+	private byte[] serializedId;
+	
+	private RedisSessionService redisSessionService;
+	
 	
 	/**
 	 * @param id
 	 * @param init true:初始化 false:已经存在
 	 */
-	public RedisHttpSession(final String id,boolean init){
-		
+	public RedisHttpSession(final String sessionId,RedisSessionService redisSessionService){
+		this.redisSessionService = redisSessionService;
+		this.sessionId = sessionId;
+		redisSessionService.freshSession(sessionId);
 	}
+	
 	@Override
 	public long getCreationTime() {
 		// TODO Auto-generated method stub
@@ -31,8 +47,7 @@ public class RedisHttpSession implements HttpSession {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionId;
 	}
 
 	@Override
@@ -68,14 +83,12 @@ public class RedisHttpSession implements HttpSession {
 
 	@Override
 	public Object getAttribute(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return redisSessionService.get(sessionId, name);
 	}
 
 	@Override
 	public Object getValue(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return getAttribute(name);
 	}
 
 	@Override
@@ -92,14 +105,12 @@ public class RedisHttpSession implements HttpSession {
 
 	@Override
 	public void setAttribute(String name, Object value) {
-		// TODO Auto-generated method stub
-
+		redisSessionService.set(sessionId, name, value);
 	}
 
 	@Override
 	public void putValue(String name, Object value) {
-		// TODO Auto-generated method stub
-
+		setAttribute(name, value);
 	}
 
 	@Override
@@ -110,14 +121,12 @@ public class RedisHttpSession implements HttpSession {
 
 	@Override
 	public void removeValue(String name) {
-		// TODO Auto-generated method stub
-
+		removeAttribute(name);
 	}
 
 	@Override
 	public void invalidate() {
-		// TODO Auto-generated method stub
-
+		this.invalidated = true;
 	}
 
 	@Override
@@ -125,5 +134,7 @@ public class RedisHttpSession implements HttpSession {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
 
 }
