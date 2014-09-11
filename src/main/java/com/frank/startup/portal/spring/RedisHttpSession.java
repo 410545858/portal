@@ -23,8 +23,6 @@ import com.frank.startup.portal.service.RedisSessionService;
 public class RedisHttpSession implements HttpSession {
 
 	private  String sessionId;
-	private boolean invalidated;
-	private byte[] serializedId;
 	
 	private RedisSessionService redisSessionService;
 	
@@ -92,15 +90,13 @@ public class RedisHttpSession implements HttpSession {
 	}
 
 	@Override
-	public Enumeration getAttributeNames() {
-		// TODO Auto-generated method stub
-		return null;
+	public Enumeration<String> getAttributeNames() {
+		return redisSessionService.getAttributeNames(sessionId);
 	}
 
 	@Override
 	public String[] getValueNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return redisSessionService.getValueNames(sessionId);
 	}
 
 	@Override
@@ -126,7 +122,7 @@ public class RedisHttpSession implements HttpSession {
 
 	@Override
 	public void invalidate() {
-		this.invalidated = true;
+		redisSessionService.clear(sessionId);
 	}
 
 	@Override

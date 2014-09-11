@@ -1,10 +1,9 @@
 package com.frank.startup.portal.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,8 @@ import com.frank.startup.portal.common.Constant;
 import com.frank.startup.portal.common.MessageConstant;
 import com.frank.startup.portal.common.SessionInfo;
 import com.frank.startup.portal.dto.LoginBean;
-import com.frank.startup.portal.entity.Menu;
 import com.frank.startup.portal.entity.User;
 import com.frank.startup.portal.service.UserService;
-import com.frank.startup.portal.spring.RedisHttpSession;
 
 /**
  * @ClassName: IndexController.java
@@ -63,12 +60,13 @@ public class IndexController extends BaseController {
 	
 
 	@RequestMapping("/index")
-	public ModelAndView index(HttpServletRequest request,RedisHttpSession session) {
+	public ModelAndView index(HttpServletRequest request,HttpSession session) {
 		System.out.println(session.getId());
-		session.setAttribute("frank", "wong");
-		System.out.println(session.getAttribute("frank"));
-		SessionInfo sessionInfo = (SessionInfo)session.getAttribute("sessionInfo");
-		System.out.println(sessionInfo.getNickName());
+		session.setAttribute("asdfasdfasf", "wadfasdfadfasdfong");
+		System.out.println(session.getAttribute("asdfasdfasf"));
+		session.invalidate();
+//		SessionInfo sessionInfo = (SessionInfo)session.getAttribute("sessionInfo");
+//		System.out.println(sessionInfo.getNickName());
 	
 //		ValueOperations<String, String> valueOper = redisTemplate.opsForValue();
 //		valueOper.set("loginname", "1asdf");

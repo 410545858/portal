@@ -3,8 +3,11 @@
  */
 package com.frank.startup.portal.service.impl;
 
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.frank.startup.portal.common.Constant;
 import com.frank.startup.portal.service.RedisSessionService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -105,16 +109,6 @@ public class RedisSessionServiceImpl implements RedisSessionService,Constant {
 	}
 
 	@Override
-	public String flushDB() {
-		return null;
-	}
-
-	@Override
-	public long dbSize() {
-		return 0;
-	}
-
-	@Override
 	public String ping() {
 		return redisTemplate.getConnectionFactory().getConnection().ping();
 	}
@@ -132,4 +126,54 @@ public class RedisSessionServiceImpl implements RedisSessionService,Constant {
 		
 	}
 
+	@Override
+	public void clear(String sessionId) {
+		final byte[] serializedId = redisTemplate.getKeySerializer().serialize(sessionId);
+		redisTemplate.execute(new RedisCallback(){
+			@Override
+			public Object doInRedis(RedisConnection connection) throws DataAccessException {
+				 connection.del(serializedId);
+				 return null;
+			}
+		});
+	}
+
+	@Override
+	public Enumeration<String> getAttributeNames(final String sessionId) {
+		final byte[] serializedId = redisTemplate.getKeySerializer().serialize(sessionId);
+		return (Enumeration<String>) redisTemplate.execute(new RedisCallback<Enumeration<String>>() {
+			@Override
+			public Enumeration<String> doInRedis(RedisConnection connection) throws DataAccessException {
+				Set<byte[]> keys = connection.hKeys(serializedId);
+				List<String> list = Lists.newArrayList();
+				for (byte[] serializedkey : keys) {
+					String key = (String) redisTemplate.getValueSerializer().deserialize(serializedkey);
+					if (!sessionId.equals(key)) {
+						list.add(key);
+					}
+				}
+				return Collections.enumeration(list);
+			}
+		});
+	}
+
+	@Override
+	public String[] getValueNames(final String sessionId) {
+		final byte[] serializedId = redisTemplate.getKeySerializer().serialize(sessionId);
+		return (String[]) redisTemplate.execute(new RedisCallback<String[]>() {
+			@Override
+			public String[] doInRedis(RedisConnection connection) throws DataAccessException {
+				Set<byte[]> keys = connection.hKeys(serializedId);
+				List<String> list = Lists.newArrayList();
+				for (byte[] serializedkey : keys) {
+					String key = (String) redisTemplate.getValueSerializer().deserialize(serializedkey);
+					if (!sessionId.equals(key)) {
+						list.add(key);
+					}
+				}
+				String[] arr = new String[list.size()];
+				return list.toArray(arr);
+			}
+		});
+	}
 }

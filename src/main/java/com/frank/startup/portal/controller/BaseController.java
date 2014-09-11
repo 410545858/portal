@@ -121,14 +121,17 @@ public class BaseController  implements MessageConstant, Constant  {
 	}
 
 	protected void clearSession(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		@SuppressWarnings("rawtypes")
-		Enumeration names = session.getAttributeNames();
-
-		while (names.hasMoreElements()) {
-			String attrName = (String) names.nextElement();
-			session.removeAttribute(attrName);
-		}
+		//TODO redisHttpSession clear
+		request.getSession().invalidate();
+		
+//		HttpSession session = request.getSession();
+//		@SuppressWarnings("rawtypes")
+//		Enumeration names = session.getAttributeNames();
+//
+//		while (names.hasMoreElements()) {
+//			String attrName = (String) names.nextElement();
+//			session.removeAttribute(attrName);
+//		}
 
 	}
 

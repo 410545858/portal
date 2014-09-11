@@ -3,6 +3,8 @@
  */
 package com.frank.startup.portal.service;
 
+import java.util.Enumeration;
+
 
 /**
  * @author frankwong
@@ -76,22 +78,6 @@ public interface RedisSessionService{
      */
     public  boolean exists(String key);
 
-    /**
-     * 清空redis 所有数据
-     * 
-     * @return
-     */
-    public  String flushDB();
-
-    /**
-     * 查看redis里有多少数据
-     */
-    public long dbSize();
-    /**
-     * 检查是否连接成功
-     * 
-     * @return
-     */
     public  String ping();
     
     
@@ -99,5 +85,11 @@ public interface RedisSessionService{
      * 刷新缓存时间
      */
     public void freshSession(String sessionId);
+    
+    public void clear(String sessionId);
+    
+    public Enumeration<String> getAttributeNames(String sessionId);
+    
+    public String[] getValueNames(String sessionId);
     	
 }
