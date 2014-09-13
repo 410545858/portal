@@ -64,7 +64,7 @@ public class IndexController extends BaseController {
 		System.out.println(session.getId());
 		session.setAttribute("asdfasdfasf", "wadfasdfadfasdfong");
 		System.out.println(session.getAttribute("asdfasdfasf"));
-		session.invalidate();
+		//session.invalidate();
 //		SessionInfo sessionInfo = (SessionInfo)session.getAttribute("sessionInfo");
 //		System.out.println(sessionInfo.getNickName());
 	
