@@ -15,7 +15,7 @@
 	<context:property-placeholder location="classpath:config.properties" ignore-unresolvable="true" />
 	<context:property-placeholder location="classpath:mongo.properties" ignore-unresolvable="true" />
 	<context:property-placeholder location="classpath:redis.properties" ignore-unresolvable="true" />
-
+	<context:property-placeholder location="classpath:elasticsearch.properties" ignore-unresolvable="true" />
 
 	<!-- Default bean name is 'mongo' -->
 	<!-- <mongo:mongo id="mongo" replica-set="${mongo.replica.set}"/> -->
@@ -159,5 +159,6 @@
 	</bean>
 	
 	<import resource="spring-dataSource.xml" />
+	<import resource="spring-elasticsearch.xml"/>
 	<!-- <import resource="spring-quartz.xml" /> -->
 </beans>
