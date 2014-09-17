@@ -21,10 +21,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.frank.startup.portal.common.Constant;
 import com.frank.startup.portal.common.MessageConstant;
-import com.frank.startup.portal.common.SessionInfo;
 import com.frank.startup.portal.dto.LoginBean;
 import com.frank.startup.portal.entity.User;
+import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
+import com.frank.startup.portal.service.SearchUserService;
 import com.frank.startup.portal.service.UserService;
+import com.frank.startup.portal.util.UUIDGenerator;
 
 /**
  * @ClassName: IndexController.java
@@ -42,6 +44,8 @@ public class IndexController extends BaseController {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
+	@Autowired
+	private SearchUserService searchUserService;
 	
 	@Autowired
 	@Qualifier("consoleMongoTemplate")
@@ -61,9 +65,13 @@ public class IndexController extends BaseController {
 
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest request,HttpSession session) {
-		System.out.println(session.getId());
-		session.setAttribute("asdfasdfasf", "wadfasdfadfasdfong");
-		System.out.println(session.getAttribute("asdfasdfasf"));
+		SearchUserEntity entry = new SearchUserEntity();
+		entry.setId(UUIDGenerator.getUUID());
+		entry.setName("中国江苏省苏州市博物馆");
+		searchUserService.index(entry);
+//		System.out.println(session.getId());
+//		session.setAttribute("asdfasdfasf", "wadfasdfadfasdfong");
+//		System.out.println(session.getAttribute("asdfasdfasf"));
 		//session.invalidate();
 //		SessionInfo sessionInfo = (SessionInfo)session.getAttribute("sessionInfo");
 //		System.out.println(sessionInfo.getNickName());
