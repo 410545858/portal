@@ -24,7 +24,7 @@ import com.frank.startup.portal.common.MessageConstant;
 import com.frank.startup.portal.dto.LoginBean;
 import com.frank.startup.portal.entity.User;
 import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
-import com.frank.startup.portal.service.SearchUserService;
+import com.frank.startup.portal.service.BaseSearchService;
 import com.frank.startup.portal.service.UserService;
 import com.frank.startup.portal.util.UUIDGenerator;
 
@@ -44,8 +44,9 @@ public class IndexController extends BaseController {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
+	@SuppressWarnings("rawtypes")
 	@Autowired
-	private SearchUserService searchUserService;
+	private BaseSearchService searchUserService;
 	
 	@Autowired
 	@Qualifier("consoleMongoTemplate")
@@ -63,11 +64,14 @@ public class IndexController extends BaseController {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/index")
 	public ModelAndView index(HttpServletRequest request,HttpSession session) {
 		SearchUserEntity entry = new SearchUserEntity();
-		entry.setId(UUIDGenerator.getUUID());
-		entry.setName("中国江苏省苏州市博物馆");
+		entry.setId("120cb0cb2e4343f9a2d1cf9f49acab0c");
+		entry.setName("中国江苏省苏州市博物馆12123");
+//		searchUserService.delete(entry);
+//		searchUserService.search(null);
 		searchUserService.index(entry);
 //		System.out.println(session.getId());
 //		session.setAttribute("asdfasdfasf", "wadfasdfadfasdfong");

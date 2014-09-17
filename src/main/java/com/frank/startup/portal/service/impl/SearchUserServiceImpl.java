@@ -3,13 +3,26 @@
  */
 package com.frank.startup.portal.service.impl;
 
+import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.filteredQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 
 import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
-import com.frank.startup.portal.service.SearchUserService;
+import com.frank.startup.portal.service.BaseSearchService;
 
 /**
  * @author frankwong
@@ -17,7 +30,7 @@ import com.frank.startup.portal.service.SearchUserService;
  */
 
 @Service
-public class SearchUserServiceImpl implements SearchUserService {
+public class SearchUserServiceImpl implements BaseSearchService<SearchUserEntity> {
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
@@ -36,6 +49,19 @@ public class SearchUserServiceImpl implements SearchUserService {
 	}
 
 	@Override
+	public void bulkIndex(List<SearchUserEntity> list) {
+		int size = list.size();
+		List<IndexQuery> queries = new ArrayList<IndexQuery>();
+		for(int i=0;i<size;i++){
+			IndexQuery indexQuery = new IndexQuery();
+			indexQuery.setId(list.get(i).getId());
+			indexQuery.setObject(list.get(i));
+			queries.add(indexQuery);
+		}
+		elasticsearchTemplate.bulkIndex(queries);
+	}
+	
+	@Override
 	public void update(SearchUserEntity entry) {
 		// TODO Auto-generated method stub
 		
@@ -43,14 +69,31 @@ public class SearchUserServiceImpl implements SearchUserService {
 
 	@Override
 	public void delete(SearchUserEntity entry) {
-		// TODO Auto-generated method stub
-		
+		elasticsearchTemplate.delete(SearchUserEntity.class, entry.getId());
 	}
 
 	@Override
-	public SearchUserEntity searchByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<SearchUserEntity> search(SearchQuery query) {
+		QueryBuilder qb1 = termQuery("name", "中国");
+		
+//		QueryBuilder qb2 = boolQuery()   
+//                .must(QueryBuilders.termQuery("content", "test1"))   
+//                .must(termQuery("content", "test4"))   
+//                .mustNot(termQuery("content", "test2"))  
+//                .should(termQuery("content", "test3"));   
+//
+//		QueryBuilder qb3 = filteredQuery(   
+//				termQuery("name.first", "shay"),   
+//				rangeFilter("age")   
+//	            .from(23)   
+//	            .to(54)   
+//	            .includeLower(true)   
+//	            .includeUpper(false)   
+//        ); 
+		
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb1).build();
+		Page<SearchUserEntity> sampleEntities = elasticsearchTemplate.queryForPage(searchQuery,SearchUserEntity.class);
+		System.out.println(sampleEntities.getContent().get(0).getId());
+		return sampleEntities;
 	}
-
 }
