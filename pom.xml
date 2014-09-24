@@ -375,6 +375,7 @@
 					<!-- http port -->
 					<port>8080</port>
 					<path>/portal</path>
+					<uriEncoding>utf8</uriEncoding>
 					<systemProperties>
 					</systemProperties>
 					<useTestClasspath>false</useTestClasspath>
