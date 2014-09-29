@@ -19,6 +19,15 @@
 				expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	
+	<!-- Service Cache -->
+	<aop:config proxy-target-class="true">  
+		<aop:aspect id="cachefunctionAdvice" ref="cacheAspect">
+			<aop:pointcut id="cachefunctionService"
+				expression="execution(* com.frank.startup.portal.service.*.*_Cache*(..))" />
+			<aop:around pointcut-ref="cachefunctionService" method="doAround" />
+		</aop:aspect>
+	</aop:config>
+	
 	<!-- mybatis Dao -->
 	<bean id="myBatisDao" class="com.frank.startup.portal.dao.MyBatisDao" />
 
