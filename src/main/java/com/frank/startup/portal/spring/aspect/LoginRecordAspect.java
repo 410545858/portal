@@ -51,7 +51,7 @@ public class LoginRecordAspect extends CommonAspect {
 			String description = (String)mav.getModelMap().get("loginResult");
 			LoginBean loginBean = (LoginBean)mav.getModelMap().get("loginBean");
 			LoginRecord loginRecord = new LoginRecord();
-			loginRecord.setIp(request.getRemoteAddr());
+			loginRecord.setIp(getIpAddr(request));
 			loginRecord.setDescription(description);
 			if(description.equals("登录成功")){
 				loginRecord.setResult("1");
@@ -79,7 +79,10 @@ public class LoginRecordAspect extends CommonAspect {
 	}
 
 	public String getIpAddr(HttpServletRequest request) {
-		String ip = request.getHeader("x-forwarded-for");
+		String ip = request.getHeader("X-Real-IP");//前置Nginx 需添加 proxy_set_header  X-Real-IP  $remote_addr;
+		if(ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)){
+			ip = request.getHeader("x-forwarded-for");
+		}
 		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
 			ip = request.getHeader("Proxy-Client-IP");
 		}
