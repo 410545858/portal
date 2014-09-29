@@ -62,8 +62,8 @@
         </mvc:interceptor>  
     </mvc:interceptors>  
     
-	<mvc:resources mapping="/img/**" location="resource/img/" cache-period="60" />
-	<mvc:resources mapping="/js/**" location="resource/js/" cache-period="60" />
-	<mvc:resources mapping="/css/**" location="resource/css/" cache-period="60" />
+	<mvc:resources mapping="/img/**" location="resource/img/" cache-period="680400" />
+	<mvc:resources mapping="/js/**" location="resource/js/" cache-period="680400" />
+	<mvc:resources mapping="/css/**" location="resource/css/" cache-period="680400" />
 	
 </beans>
