@@ -59,6 +59,20 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 		<servlet-name>portal</servlet-name>
 	</filter-mapping>
 	
+	<filter>
+    <filter-name>PageEhCacheFilter</filter-name>
+    <filter-class>com.frank.startup.portal.spring.filter.PageEhCacheFilter</filter-class>
+    	<init-param>
+	        <param-name>patterns</param-name>
+	        <!-- 配置你需要缓存的url -->
+	        <param-value>/index </param-value>
+    	</init-param>
+	</filter>
+	<filter-mapping>
+    	<filter-name>PageEhCacheFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
