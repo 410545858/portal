@@ -431,6 +431,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<cache.urls>/index</cache.urls>
 				<db.driver>com.mysql.jdbc.Driver</db.driver>
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
 				<!-- 数据库集群配置 -->
@@ -462,6 +463,7 @@
 		<profile>
 			<id>staging</id>
 			<properties>
+				<cache.urls>/index</cache.urls>
 				<db.driver>com.mysql.jdbc.Driver</db.driver>
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
 				<db.username>startup</db.username>
@@ -489,6 +491,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
+				<cache.urls>/index</cache.urls>
 				<db.driver>com.mysql.jdbc.Driver</db.driver>
 				<db.url>jdbc:mysql://203.195.186.200:3306/startup?useUnicode=true&amp;characterEncoding=UTF-8</db.url>
 				<db.username>startup</db.username>

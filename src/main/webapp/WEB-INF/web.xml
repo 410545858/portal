@@ -65,7 +65,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     	<init-param>
 	        <param-name>patterns</param-name>
 	        <!-- 配置你需要缓存的url -->
-	        <param-value>/index </param-value>
+	        <param-value>${cache.urls}</param-value>
     	</init-param>
 	</filter>
 	<filter-mapping>
