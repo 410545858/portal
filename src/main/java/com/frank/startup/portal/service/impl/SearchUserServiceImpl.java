@@ -3,14 +3,10 @@
  */
 package com.frank.startup.portal.service.impl;
 
-import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.filteredQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +70,8 @@ public class SearchUserServiceImpl implements BaseSearchService<SearchUserEntity
 
 	@Override
 	public Page<SearchUserEntity> search(SearchQuery query) {
-		QueryBuilder qb1 = termQuery("name", "中国");
-		
+//		QueryBuilder qb1 = MatchQuery("name", "新科电器");
+		QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "新科电器").operator(MatchQueryBuilder.Operator.AND);
 //		QueryBuilder qb2 = boolQuery()   
 //                .must(QueryBuilders.termQuery("content", "test1"))   
 //                .must(termQuery("content", "test4"))   
@@ -91,9 +87,9 @@ public class SearchUserServiceImpl implements BaseSearchService<SearchUserEntity
 //	            .includeUpper(false)   
 //        ); 
 		
-		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(qb1).build();
+		SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).build();
 		Page<SearchUserEntity> sampleEntities = elasticsearchTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-		System.out.println(sampleEntities.getContent().get(0).getId());
+		System.out.println(sampleEntities.getContent().get(0).getName());
 		return sampleEntities;
 	}
 }
