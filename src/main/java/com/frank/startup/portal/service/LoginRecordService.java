@@ -11,5 +11,5 @@ import com.frank.startup.portal.entity.LoginRecord;
  */
 public interface LoginRecordService  {
 
-	void add(LoginRecord entry);
+	boolean add(LoginRecord entry);
 }

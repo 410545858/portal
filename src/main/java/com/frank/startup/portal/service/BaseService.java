@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface BaseService<T> {
 
-	void add(T entity);
+	boolean add(T entity);
 
-	void deleteById(int id);
+	boolean deleteById(int id);
 	
-	void deleteByIds(List<Integer> ids);
+	int deleteByIds(List<Integer> ids);
 
-	void update(T entity);
+	boolean update(T entity);
 
 	T getById(int id);
 	

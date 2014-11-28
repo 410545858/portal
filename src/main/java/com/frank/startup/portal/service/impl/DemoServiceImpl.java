@@ -22,27 +22,27 @@ public class DemoServiceImpl<T> implements BaseService<T> {
 	
 	
 	@Override
-	public void add(T entity) {
+	public boolean add(T entity) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public boolean deleteById(int id) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override
-	public void deleteByIds(List<Integer> ids) {
+	public int deleteByIds(List<Integer> ids) {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
 	@Override
-	public void update(T entity) {
+	public boolean update(T entity) {
 		// TODO Auto-generated method stub
-		
+		return true;
 	}
 
 	@Override

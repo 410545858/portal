@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	private MyBatisDao myBatisDao;
 
 	@Override
-	public void add(User entity) {
+	public boolean add(User entity) {
 		myBatisDao.add("userMapper.add", entity);
 		int userId = entity.getId();
 		String roleIdsStr = entity.getRoleIds();
@@ -51,24 +51,26 @@ public class UserServiceImpl implements UserService {
 	             myBatisDao.add("userMapper.addUserRole", userRole);
 	          }
 		}
+		return true;
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public boolean deleteById(int id) {
 		myBatisDao.deleteById("userMapper.deleteUserRoleByUserId", id);
 		myBatisDao.deleteById("userMapper.deleteById", id);
+		return true;
 	}
 
 	@Override
-	public void deleteByIds(List<Integer> ids) {
+	public int deleteByIds(List<Integer> ids) {
 		for(Integer id:ids){
 			myBatisDao.deleteById("userMapper.deleteUserRoleByUserId", id);
 		}
-		myBatisDao.deleteByIds("userMapper.deleteByIds", ids);
+		return myBatisDao.deleteByIds("userMapper.deleteByIds", ids);
 	}
 
 	@Override
-	public void update(User entity) {
+	public boolean update(User entity) {
 		String roleIdsStr = entity.getRoleIds();
 		myBatisDao.update("userMapper.update", entity);
 		if(StringUtils.isNotBlank(roleIdsStr)){
@@ -81,6 +83,7 @@ public class UserServiceImpl implements UserService {
 	             myBatisDao.add("userMapper.addUserRole", userRole);
 			}
 		}
+		return true;
 	}
 
 	@Override

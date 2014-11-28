@@ -38,16 +38,16 @@ public class MyBatisDao extends SqlSessionDaoSupport {
 		return getSqlSession().delete(key, id);
 	}
 
-	public void deleteByIds(String key, List<Integer> ids) {
-		getSqlSession().delete(key, ids);
+	public int deleteByIds(String key, List<Integer> ids) {
+		return getSqlSession().delete(key, ids);
 	}
 	
 	/** 
 	 * @Title:        update 
 	 * @Description:  更新操作
 	 * @param:        key:mapper
-	 * @param:        object:要删除的对象
-	 * @return:       int 0:删除失败  1:删除成功      
+	 * @param:        object:要更新的对象
+	 * @return:       int 0:更新失败  1:更新成功
 	 * @throws 
 	 */
 	public int update(String key,Object object){

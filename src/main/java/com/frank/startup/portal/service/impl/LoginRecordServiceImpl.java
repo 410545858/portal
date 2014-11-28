@@ -25,10 +25,11 @@ public class LoginRecordServiceImpl implements LoginRecordService {
 	
 	
 	@Override
-	public void add(LoginRecord entry) {
+	public boolean add(LoginRecord entry) {
 		myBatisDao.add("loginRecordMapper.add", entry);
 		User user = new User(new Date(),entry.getIp(),entry.getLoginName());
 		myBatisDao.add("userMapper.updateLastLoginInfo", user);
+		return true;
 	}
 
 }
