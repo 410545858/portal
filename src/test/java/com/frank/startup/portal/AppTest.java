@@ -15,8 +15,7 @@ import org.junit.Test;
  * @author         FrankWong
  * @version        V1.0  
  */
-public class AppTest extends TestCase {
-
+public class AppTest {
 
 	/**
 	 * @Description: 开始单元测试前执行，只会运行一次，比如进行文件操作前进行打开一个大文件并读入文件内容
@@ -25,6 +24,7 @@ public class AppTest extends TestCase {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		System.out.println("AppTest.setUpBeforeClass");
 	}
 
 	/**
@@ -34,6 +34,7 @@ public class AppTest extends TestCase {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		System.out.println("AppTest.tearDownAfterClass");
 	}
 
 	/**
@@ -43,7 +44,7 @@ public class AppTest extends TestCase {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testClear();
+		System.out.println("AppTest.setUp");
 	}
 
 	/**
@@ -53,6 +54,7 @@ public class AppTest extends TestCase {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		System.out.println("AppTest.tearDown");
 	}
 
 	/**
@@ -60,6 +62,7 @@ public class AppTest extends TestCase {
 	 */
 	@Test
 	public final void testAdd() {
+		System.out.println("AppTest.testAdd");
 	}
 
 	/**
@@ -67,6 +70,7 @@ public class AppTest extends TestCase {
 	 */
 	@Test
 	public final void testSubstract() {
+		System.out.println("AppTest.testSubstract");
 	}
 
 
@@ -75,27 +79,26 @@ public class AppTest extends TestCase {
 	 */
 	@Test
 	public final void testDivide() {
+		System.out.println("AppTest.testDivide");
 	}
 
-	@Test(expected = ArithmeticException.class)
-	public void divideByZero() {
-	}
 
 	/**
 	 * Test method for {@link com.yellow.junit.Calculator#square(int)}.
 	 */
 	@Test
 	public final void testSquare() {
+		System.out.println("AppTest.testSquare");
 	}
 
 	/**
 	 * Test method for {@link com.yellow.junit.Calculator#squareRoot(int)}.
 	 */
-	@Ignore("SquareRoot() Not yet implemented")
 	// 此方法忽略测试
 	@Test(timeout = 1000)
 	// 设定一个执行时间，超过了这个时间，他们就会被系统强行终止，并且系统还会向你汇报该函数结束的原因是因为超时
 	public final void testSquareRoot() {
+		System.out.println("AppTest.testSquareRoot");
 	}
 
 	/**
@@ -103,6 +106,7 @@ public class AppTest extends TestCase {
 	 */
 	@Test
 	public final void testClear() {
+		System.out.println("AppTest.testClear");
 	}
 
 	/**
@@ -110,5 +114,6 @@ public class AppTest extends TestCase {
 	 */
 	@Test
 	public final void testGetResult() {
+		System.out.println("AppTest.testGetResult");
 	}
 }
