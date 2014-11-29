@@ -19,6 +19,12 @@
 		loginName,nickName,password,phone,email,status,avatar
 	</sql>
 
+	<select id="getByDistance" parameterType="Map" resultType="channelNetwork">
+		select
+		<include refid="mini_column"/>,ROUND(6378.138*2*ASIN(SQRT(POW(SIN((#{latitude}*PI()/180-latitude*PI()/180)/2),2)+COS(#{latitude}*PI()/180)*COS(latitude*PI()/180)*POW(SIN((#{longitude}*PI()/180-longitude*PI()/180)/2),2)))*1000) AS distance
+		from  channel_network having(distance  &lt; #{distance}) ORDER BY distance ASC
+	</select>
+
 	<delete id="deleteByIds" parameterType="java.util.List">
 		delete from user where id in
 		<foreach collection="list" index="index" item="id" open="("
