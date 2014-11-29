@@ -24,7 +24,6 @@ public class AppTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.out.println("AppTest.setUpBeforeClass");
 	}
 
 	/**
@@ -34,7 +33,6 @@ public class AppTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		System.out.println("AppTest.tearDownAfterClass");
 	}
 
 	/**
@@ -44,7 +42,6 @@ public class AppTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		System.out.println("AppTest.setUp");
 	}
 
 	/**
@@ -54,7 +51,6 @@ public class AppTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		System.out.println("AppTest.tearDown");
 	}
 
 	/**
@@ -62,7 +58,6 @@ public class AppTest {
 	 */
 	@Test
 	public final void testAdd() {
-		System.out.println("AppTest.testAdd");
 	}
 
 	/**
@@ -70,7 +65,6 @@ public class AppTest {
 	 */
 	@Test
 	public final void testSubstract() {
-		System.out.println("AppTest.testSubstract");
 	}
 
 
@@ -79,7 +73,6 @@ public class AppTest {
 	 */
 	@Test
 	public final void testDivide() {
-		System.out.println("AppTest.testDivide");
 	}
 
 
@@ -88,7 +81,6 @@ public class AppTest {
 	 */
 	@Test
 	public final void testSquare() {
-		System.out.println("AppTest.testSquare");
 	}
 
 	/**
@@ -98,7 +90,6 @@ public class AppTest {
 	@Test(timeout = 1000)
 	// 设定一个执行时间，超过了这个时间，他们就会被系统强行终止，并且系统还会向你汇报该函数结束的原因是因为超时
 	public final void testSquareRoot() {
-		System.out.println("AppTest.testSquareRoot");
 	}
 
 	/**
@@ -106,7 +97,6 @@ public class AppTest {
 	 */
 	@Test
 	public final void testClear() {
-		System.out.println("AppTest.testClear");
 	}
 
 	/**
@@ -114,6 +104,5 @@ public class AppTest {
 	 */
 	@Test
 	public final void testGetResult() {
-		System.out.println("AppTest.testGetResult");
 	}
 }
