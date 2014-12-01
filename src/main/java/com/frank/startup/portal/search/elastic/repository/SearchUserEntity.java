@@ -37,8 +37,19 @@ public class SearchUserEntity {
 	@Field(type=FieldType.Date,format = DateFormat.date_hour_minute_second_millis,store = true)
 	private Date birthDay;
 
-	@Field(store = true,type = FieldType.Object)
-	private GeoPoint geoPoint;
+	//由于FieldType 不包含GEO_type,所以只能按照官方http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/mapping-geo-point-type.html
+	//String格式处理，且mapping需要执行命令增加location  geo_type
+	/*
+	  curl -XPUT 'http://localhost:9200/person/_mapping/user' -d '
+	{
+		"user" : {
+		"properties" : {
+			"location" : {"type" : "geo_point", "store" : true }
+		}
+	}
+	}'
+	*/
+	private String location;
 
 	@Field(type=FieldType.Double,store=true)
 	private double score;
@@ -58,12 +69,12 @@ public class SearchUserEntity {
 		this.birthDay = birthDay;
 	}
 
-	public GeoPoint getGeoPoint() {
-		return geoPoint;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setGeoPoint(GeoPoint geoPoint) {
-		this.geoPoint = geoPoint;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public double getScore() {

@@ -1,18 +1,12 @@
 package com.frank.startup.portal;
 
-import com.frank.startup.portal.entity.User;
 import com.frank.startup.portal.search.elastic.repository.Friend;
 import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
-import com.frank.startup.portal.service.UserService;
-import org.apache.lucene.search.TermQuery;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoPoint;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -25,10 +19,6 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
-import static org.elasticsearch.index.query.QueryBuilders.filteredQuery;
 
 /**
  * Created by FrankWong on 12/1/14.
@@ -82,7 +72,7 @@ public class SearchTest {
     }
 
     @Test
-    public final void testSearch(){
+    public final void testSearch() {
         QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "黄华锋").operator(MatchQueryBuilder.Operator.AND);
 //		QueryBuilder qb2 = boolQuery()
 //                .must(QueryBuilders.termQuery("content", "test1"))
@@ -91,12 +81,12 @@ public class SearchTest {
 //                .should(termQuery("content", "test3"));
 //
         QueryBuilder termQuery = QueryBuilders.termQuery("address", "中国江苏省");
-		QueryBuilder ageRangeQuery = QueryBuilders.rangeQuery("age").from(19).to(30);
+        QueryBuilder ageRangeQuery = QueryBuilders.rangeQuery("age").from(19).to(30);
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery().must(matchQuery).must(ageRangeQuery).must(termQuery);
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(termQuery).build();
-        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -105,12 +95,12 @@ public class SearchTest {
     }
 
     @Test
-    public final void testMatchQuery(){
+    public final void testMatchQuery() {
         QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "黄华").operator(MatchQueryBuilder.Operator.AND);
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).build();
-        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -122,12 +112,12 @@ public class SearchTest {
      *
      */
     @Test
-    public final void testTermQuery(){
+    public final void testTermQuery() {
         QueryBuilder termQuery = QueryBuilders.termQuery("address", "中国");
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(termQuery).build();
-        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -136,13 +126,13 @@ public class SearchTest {
     }
 
     @Test
-    public final void testRangeQuery(){
+    public final void testRangeQuery() {
         //闭区间
         QueryBuilder rangeQuery = QueryBuilders.rangeQuery("age").from(25).to(30);
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(rangeQuery).build();
-        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -154,9 +144,9 @@ public class SearchTest {
         QueryBuilder rangeQuery2 = QueryBuilders.rangeQuery("age").lte(24);
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery().should(rangeQuery2).should(rangeQuery1).minimumNumberShouldMatch(1);
         searchQuery = new NativeSearchQueryBuilder().withQuery(boolQuery).build();
-        sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -165,14 +155,44 @@ public class SearchTest {
     }
 
     @Test
-    public final void testBooleanQuery(){
+    public final void testBooleanQuery() {
         QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "黄华锋").operator(MatchQueryBuilder.Operator.AND);
         QueryBuilder ageRangeQuery = QueryBuilders.rangeQuery("age").from(19).to(30);
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery().must(matchQuery).must(ageRangeQuery);
         SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).build();
-        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery,SearchUserEntity.class);
-        System.out.println("result count: "+sampleEntities.getContent().size());
-        if(sampleEntities.getContent().size()!=0){
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
+            for (int i = 0; i < sampleEntities.getContent().size(); i++) {
+                System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
+                System.out.println(sampleEntities.getContent().get(i).getAge());
+            }
+        }
+    }
+
+    @Test
+    public final void testGeoQuery() {
+        double longitude = 127.9200;
+        double latitude = 32.10109;
+        GeoDistanceFilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(latitude, longitude).distance(95, DistanceUnit.KILOMETERS);
+
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withFilter(filter)
+                .withSort(SortBuilders.geoDistanceSort("location").point(latitude, longitude).order(SortOrder.ASC)).build();
+
+        List<SearchUserEntity> sites = esTemplate.queryForList(searchQuery, SearchUserEntity.class);
+        for (int i = 0; i < sites.size(); i++) {
+            System.out.printf(sites.get(i).getAddress());
+        }
+    }
+
+    @Test
+    public final void testChildQuery() {
+        QueryBuilder matchQuery = QueryBuilders.matchQuery("friendList.name", "王菲").operator(MatchQueryBuilder.Operator.AND);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).build();
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        System.out.println("result count: " + sampleEntities.getContent().size());
+        if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
                 System.out.println(sampleEntities.getContent().get(i).getAge());
@@ -190,8 +210,8 @@ public class SearchTest {
         entry.setGender(true);
         entry.setScore(1910.0129);
         entry.setIp("192.168.2.110");
-        GeoPoint geoPoint = new GeoPoint(32.10109,128.9200);
-        entry.setGeoPoint(geoPoint);
+        GeoPoint geoPoint = new GeoPoint(32.10109, 128.9200);
+        entry.setLocation("32.10109,128.9200");
         Friend friend = new Friend();
         List<Friend> friendList = new ArrayList<>();
         friend.setName("王菲");
