@@ -14,7 +14,9 @@ import org.junit.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -99,14 +101,17 @@ public class SearchTest {
     }
 
     /**
-     * match and sort
+     * match and sort and pagination
      */
     @Test
     public final void testMatchQuery() {
         QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "测试人员").operator(MatchQueryBuilder.Operator.AND);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).withSort(SortBuilders.fieldSort("name").order(SortOrder.ASC)).build();
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).withPageable(new PageRequest(0, 20)).
+                withSort(SortBuilders.fieldSort("name").order(SortOrder.ASC)).build();
         Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
-        System.out.println("result count: " + sampleEntities.getContent().size());
+        long count = esTemplate.count(searchQuery, SearchUserEntity.class);
+        SearchResultMapper searchResultMapper ;
+        System.out.println("count:"+count+"   list count: " + sampleEntities.getContent().size());
         System.out.println("sampleEntities.getTotalElements()"+sampleEntities.getTotalElements());
         System.out.println(sampleEntities.getTotalPages());
         System.out.println(sampleEntities.getSize());
@@ -118,6 +123,7 @@ public class SearchTest {
                 System.out.println(sampleEntities.getContent().get(i).getAge());
             }
         }
+
     }
 
     /**
