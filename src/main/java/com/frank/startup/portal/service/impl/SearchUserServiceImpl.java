@@ -6,6 +6,7 @@ package com.frank.startup.portal.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
 import com.frank.startup.portal.service.BaseSearchService;
 
+import javax.annotation.Resource;
+
 /**
  * @author frankwong
  *
@@ -30,7 +33,10 @@ public class SearchUserServiceImpl implements BaseSearchService<SearchUserEntity
 
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
-	
+
+	@Resource(name="elasticsearchClient")
+	private Client client;
+
 	@Override
 	public void index(SearchUserEntity entry) {
 		IndexQuery indexQuery = new IndexQuery();

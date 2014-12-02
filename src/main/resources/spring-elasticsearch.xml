@@ -7,10 +7,10 @@
 
     <elasticsearch:repositories base-package="com.frank.startup.portal.search"/>
 
-    <elasticsearch:transport-client id="client" cluster-nodes="${elasticsearch.cluster.nodes}" cluster-name="${elasticsearch.cluster.name}" />
+    <elasticsearch:transport-client id="elasticsearchClient" cluster-nodes="${elasticsearch.cluster.nodes}" cluster-name="${elasticsearch.cluster.name}" />
 
     <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
-        <constructor-arg name="client" ref="client"/>
+        <constructor-arg name="client" ref="elasticsearchClient"/>
     </bean>
 
 </beans>
