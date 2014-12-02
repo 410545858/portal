@@ -5,6 +5,9 @@ import com.frank.startup.portal.search.elastic.repository.SearchUserEntity;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.search.geo.GeoDistanceRangeFilter;
+import org.elasticsearch.search.aggregations.bucket.range.geodistance.GeoDistance;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.*;
@@ -17,6 +20,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -94,12 +98,20 @@ public class SearchTest {
         }
     }
 
+    /**
+     * match and sort
+     */
     @Test
     public final void testMatchQuery() {
-        QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "黄华").operator(MatchQueryBuilder.Operator.AND);
-        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).build();
+        QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "测试人员").operator(MatchQueryBuilder.Operator.AND);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).withSort(SortBuilders.fieldSort("name").order(SortOrder.ASC)).build();
         Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
         System.out.println("result count: " + sampleEntities.getContent().size());
+        System.out.println("sampleEntities.getTotalElements()"+sampleEntities.getTotalElements());
+        System.out.println(sampleEntities.getTotalPages());
+        System.out.println(sampleEntities.getSize());
+        System.out.println(sampleEntities.getNumber());
+        System.out.println(sampleEntities.getContent().size());
         if (sampleEntities.getContent().size() != 0) {
             for (int i = 0; i < sampleEntities.getContent().size(); i++) {
                 System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
@@ -175,15 +187,29 @@ public class SearchTest {
         double longitude = 127.9200;
         double latitude = 32.10109;
         GeoDistanceFilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(latitude, longitude).distance(95, DistanceUnit.KILOMETERS);
-
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withFilter(filter)
                 .withSort(SortBuilders.geoDistanceSort("location").point(latitude, longitude).order(SortOrder.ASC)).build();
-
         List<SearchUserEntity> sites = esTemplate.queryForList(searchQuery, SearchUserEntity.class);
         for (int i = 0; i < sites.size(); i++) {
-            System.out.printf(sites.get(i).getAddress());
+            System.out.println(sites.get(i).getAddress());
         }
+        System.out.println("finished");
+        GeoDistanceRangeFilterBuilder geoRangeFilter = FilterBuilders.geoDistanceRangeFilter("location")
+                .point(latitude, longitude)
+                .from("94km")
+                .to("95km")
+                .includeLower(true)
+                .includeUpper(false)
+                .optimizeBbox("memory")
+                .geoDistance(org.elasticsearch.common.geo.GeoDistance.ARC);
+
+        searchQuery = new NativeSearchQueryBuilder().withFilter(geoRangeFilter).build();
+        sites = esTemplate.queryForList(searchQuery, SearchUserEntity.class);
+        for (int i = 0; i < sites.size(); i++) {
+            System.out.println(sites.get(i).getAddress());
+        }
+
     }
 
     @Test
@@ -232,9 +258,12 @@ public class SearchTest {
         friend2.setHomePoint(new GeoPoint(32.13909, 120.14112));
         friendList.add(friend2);
         entry.setFriendList(friendList);
-        IndexQuery indexQuery = new IndexQuery();
-        indexQuery.setObject(entry);
-        esTemplate.index(indexQuery);
+        for (int i = 0; i < 100; i++) {
+            IndexQuery indexQuery = new IndexQuery();
+            entry.setName("测试人员"+String.valueOf(i));
+            indexQuery.setObject(entry);
+            esTemplate.index(indexQuery);
+        }
     }
 
 }
