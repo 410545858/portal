@@ -126,6 +126,20 @@ public class SearchTest {
 
     }
 
+    @Test
+    public final void testBoostQuery(){
+        QueryBuilder matchQuery = QueryBuilders.matchQuery("name", "测试人员").operator(MatchQueryBuilder.Operator.AND).boost(1.0f);
+        SearchQuery searchQuery = new NativeSearchQueryBuilder().withQuery(matchQuery).withPageable(new PageRequest(0, 20)).
+                withSort(SortBuilders.scoreSort().order(SortOrder.ASC)).build();
+        Page<SearchUserEntity> sampleEntities = esTemplate.queryForPage(searchQuery, SearchUserEntity.class);
+        long count = esTemplate.count(searchQuery, SearchUserEntity.class);
+        if (sampleEntities.getContent().size() != 0) {
+            for (int i = 0; i < sampleEntities.getContent().size(); i++) {
+                System.out.print(sampleEntities.getContent().get(i).getName() + "  ");
+                System.out.println(sampleEntities.getContent().get(i).getAge());
+            }
+        }
+    }
     /**
      *
      */
